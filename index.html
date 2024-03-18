@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT-3.5 Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            margin-right: 10px;
+            display: inline-block;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: inline-block;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        #footer {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            width: 100%;
+        }
+        #footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GPT-3.5 Image Generator</h1>
+        <form id="textForm">
+            <label for="textInput">Enter Text:</label>
+            <input type="text" id="textInput" name="text" placeholder="Enter text here...">
+            <button type="submit">Generate</button>
+        </form>
+        <div id="output"></div>
+    </div>
+
+    <div id="footer">
+        <p>Created by: <a href="https://t.me/ZORO2045" target="_blank">ፚ Ꭷ Ꮢ Ꭷ ❥</a></p>
+    </div>
+
+    <script>
+        document.getElementById('textForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var text = document.getElementById('textInput').value;
+            generateText(text);
+        });
+
+        function generateText(text) {
+            var xhr = new XMLHttpRequest();
+            var url = 'https://koala.sh/api/gpt/';
+            var data = {
+                input: '/dream ' + text,
+                inputHistory: [],
+                outputHistory: [],
+                model: 'gpt-3.5-turbo'
+            };
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        document.getElementById('output').innerText = xhr.responseText;
+                    } else {
+                        document.getElementById('output').innerText = 'Failed to get result. Status code: ' + xhr.status;
+                    }
+                }
+            };
+            xhr.send(JSON.stringify(data));
+        }
+    </script>
+</body>
+</html>
