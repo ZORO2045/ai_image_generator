@@ -9,7 +9,7 @@ This project is an image generator based on the GPT-3.5 model. Users can input t
 
 1. Enter the desired text in the designated field.
 2. Click the "Generate" button.
-3. The generated image based on the input text will be displayed.
+3. The generated image based on the input text will be displayed as link below, so you can copy it and open in new tab.
 
 ### Note
 
