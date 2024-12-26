@@ -1,144 +1,238 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GPT-3.5 Image Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AI Image Generator | GPT-3.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
-
+        :root {
+            --background-color: #1a1a1a;
+            --primary-color: #ffffff;
+            --secondary-color: #4caf50;
+            --accent-color: #ffeb3b;
+            --input-background: #2c2c2c;
+            --input-border: #444444;
+        }
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #000;
+            background-color: var(--input-background);
+            color: var(--primary-color);
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            height: 100vh;
-            color: #ECEFF4;
-            overflow: hidden;
+            justify-content: flex-start
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
-        .container {
-            text-align: center;
-            background-color: #1c1c1c;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(255, 255, 0, 0.7), 0 4px 8px rgba(255, 255, 0, 0.5);
-            max-width: 400px;
-            width: 100%;
-            animation: fadeIn 1s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+       .container {
+            background-color: var(--input-background);
+            padding: 40px;
+            max-width: 750px;
+            width: auto;
+            margin: 20px auto; 
+            text-align: center; 
         }
         h1 {
-            font-size: 42px;
+            font-size: 3em;
+            color: var(--primary-color);
             margin-bottom: 25px;
-            color: #FFD700;
-            text-shadow: 3px 3px 8px rgba(255, 255, 0, 0.7);
-            animation: slideIn 1s ease-out;
+            position: relative;
+            display: inline-block;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            height: 4px;
+            width: 50px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
         }
         label {
-            font-size: 20px;
-            display: block;
+             display: block;
+            font-size: 1.3em;
             margin-bottom: 10px;
-            color: #FFD700;
-        }
+            color: var(--secondary-color);
+            font-weight: 500;
+            text-align: left;
+       }
         input[type="text"] {
-            padding: 12px;
-            font-size: 18px;
-            width: calc(100% - 24px);
-            border-radius: 10px;
-            border: 1px solid #FFD700;
-            margin-bottom: 20px;
-            display: inline-block;
-            background-color: #282a36;
-            color: #f8f8f2;
-            transition: border-color 0.3s ease;
-        }
+            padding: 14px;
+            font-size: 1.2em;
+           border: 1px solid var(--input-border);
+            border-radius: 8px;
+            width: calc(100% - 28px);
+             margin-bottom: 20px;
+             box-sizing: border-box;
+           transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: var(--input-background);
+           color: var(--primary-color);
+            outline: none;
+       }
         input[type="text"]:focus {
-            border-color: #FFD700;
+           border-color: var(--secondary-color);
+           box-shadow: 0 0 8px rgba(var(--secondary-color), 0.5);
         }
         button {
-            padding: 12px 24px;
-            font-size: 20px;
-            background-color: #FFD700;
+            padding: 14px 30px;
+           font-size: 1.2em;
+            background-color: var(--secondary-color);
+            color: var(--background-color);
             border: none;
-            color: #000;
-            border-radius: 10px;
+           border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-            display: inline-block;
-            box-shadow: 0 6px 15px rgba(255, 255, 0, 0.4);
+             transition: background-color 0.3s, transform 0.2s;
+             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
         button:hover {
-            background-color: #FFEA00;
+            background-color: #45a049;
             transform: translateY(-2px);
         }
         #output {
-            font-size: 22px;
-            margin-top: 20px;
-            text-align: center;
-            color: #f8f8f2;
-            background-color: #44475a;
+            margin-top: 30px;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(255, 255, 0, 0.5);
-            animation: popIn 0.5s ease-out;
+           border: 1px solid var(--input-border);
+            border-radius: 8px;
+            background-color: var(--input-background);
+           text-align: center;
+             min-height: 200px;
+           box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+           justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        #output img {
+            max-width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+             display: block;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+         }
+        #output p {
+            font-size: 1.2em;
+            color: var(--primary-color);
         }
-        #footer {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 14px;
-            color: #FFD700;
-            text-align: center;
+        .loading-overlay {
+           position: absolute;
+            top: 0;
+           left: 0;
             width: 100%;
-            animation: fadeIn 1.5s ease-out;
+            height: 100%;
+            background: linear-gradient(45deg, #f39c12, #2ecc71, #3498db, #9b59b6);
+           background-size: 400% 400%;
+             animation: gradientAnimation 5s ease infinite;
+           display: flex;
+            justify-content: center;
+            align-items: center;
+             opacity: 1;
+            transition: opacity 0.5s ease;
+       }
+       .loader {
+            border: 8px solid #f3f3f3;
+           border-top: 8px solid var(--secondary-color);
+            border-radius: 50%;
+             width: 60px;
+             height: 60px;
+            animation: spin 2s linear infinite;
         }
-        #footer a {
-            color: #FFD700;
+         @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+       }
+         @keyframes gradientAnimation {
+            0% {background-position: 0% 50%;}
+           50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+       }
+        .loading-overlay.hidden {
+             opacity: 0;
+            pointer-events: none;
+        }
+        .image-buttons {
+            margin-top: 10px;
+             display: flex;
+            justify-content: center;
+           gap: 10px;
+        }
+        .image-buttons button {
+           padding: 12px 24px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+             cursor: pointer;
+             transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #4caf50, #2ecc71);
+            color: var(--background-color);
+            background-size: 200% 100%;
+            transition: background-position 0.3s ease, transform 0.2s;
+        }
+       .image-buttons button:hover {
+             background-position: right center;
+           transform: translateY(-2px);
+        }
+        footer {
+           margin-top: auto;
+            padding: 20px 0;
+           text-align: center;
+           color: #777;
+             width: 100%;
+           font-size: 0.9em;
+           background-color: var(--input-background);
+            display: block;
+        }
+        footer p {
+            font-weight: bold;
+        }
+        footer a {
+            color: var(--secondary-color);
             text-decoration: none;
-        }
-        #footer a:hover {
-            text-decoration: underline;
+            font-style: italic;
+       }
+        footer a:hover {
+           text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>GPT-3.5 Image Generator</h1>
+        <h1>AI Image Generator</h1>
         <form id="textForm">
-            <label for="textInput">Enter Text:</label>
-            <input type="text" id="textInput" name="text" placeholder="Enter text here...">
+            <label for="textInput">Enter Image Description:</label>
+            <input type="text" id="textInput" name="text" placeholder="e.g., A majestic dragon flying over a castle">
             <button type="submit">Generate</button>
         </form>
         <div id="output"></div>
-    </div>
-
-    <div id="footer">
-        <p>Created by: <a href="https://t.me/ZORO2045" target="_blank">ፚ Ꭷ Ꮢ Ꭷ ❥</a></p>
-    </div>
-
+        <div id="imageButtons" class="image-buttons" style="display: none;">
+            <button id="fullScreenBtn">Preview</button>
+           <button id="downloadBtn">Download</button>
+        </div>
+        <footer>
+        <p>Developed by: <a href="https://t.me/ZORO2045" target="_blank">ፚ Ꭷ Ꮢ Ꭷ ❥</a></p>
+    </footer>
+   </div>
     <script>
         document.getElementById('textForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var text = document.getElementById('textInput').value;
-            generateText(text);
+            generateImage(text);
         });
 
-        function generateText(text) {
+        function generateImage(text) {
+            var outputDiv = document.getElementById('output');
+           var imageButtonsDiv = document.getElementById('imageButtons');
+            outputDiv.innerHTML = '<div class="loading-overlay"><div class="loader"></div></div>';
+            imageButtonsDiv.style.display = 'none';
             var xhr = new XMLHttpRequest();
             var url = 'https://koala.sh/api/gpt/';
             var data = {
@@ -146,20 +240,89 @@
                 inputHistory: [],
                 outputHistory: [],
                 model: 'gpt-3.5-turbo'
-            };
+           };
             xhr.open('POST', url, true);
             xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onreadystatechange = function() {
+           xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        document.getElementById('output').innerText = xhr.responseText;
-                    } else {
-                        document.getElementById('output').innerText = 'Failed to get result. Status code: ' + xhr.status;
+                   outputDiv.innerHTML = '';
+                   var loadingOverlay = outputDiv.querySelector('.loading-overlay');
+                   if (loadingOverlay) {
+                       loadingOverlay.classList.add('hidden');
+                        setTimeout(() => {
+                            loadingOverlay.remove();
+                       }, 500)
                     }
-                }
+                    if (xhr.status === 200) {
+                       var responseText = xhr.responseText;
+                        try {
+                            var urlRegex = /(https?:\/\/[^\s]+?(jpe?g|png|gif))/i;
+                           var match = responseText.match(urlRegex);
+                            if (match) {
+                                var imageUrl = match[0];
+                                 var img = document.createElement('img');
+                                img.src = imageUrl;
+                                img.onload = function() {
+                                       outputDiv.appendChild(img);
+                                        imageButtonsDiv.style.display = 'flex';
+                                };
+                                 img.onerror = function() {
+                                      outputDiv.innerHTML = '<p>Failed to load image</p>';
+                                   };
+                                 document.getElementById('fullScreenBtn').onclick = function() {
+                                    openFullScreenImage(imageUrl)
+                                 }
+                                  document.getElementById('downloadBtn').onclick = function() {
+                                      downloadImage(imageUrl)
+                                  }
+                            } else {
+                                outputDiv.innerHTML = '<p>No image url was found.</p>';
+                            }
+                       } catch (e) {
+                           outputDiv.innerHTML = '<p>Error processing the API response.</p>';
+                       }
+                   } else {
+                       outputDiv.innerHTML = '<p>Failed to get result. Status code: ' + xhr.status + '</p>';
+                    }
+               }
             };
             xhr.send(JSON.stringify(data));
-        }
+       }
+
+        function openFullScreenImage(imageUrl) {
+           var fullScreenImg = document.createElement('img');
+           fullScreenImg.src = imageUrl;
+           fullScreenImg.style.cssText = `
+                position: fixed;
+               top: 0;
+               left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                 background-color: rgba(0, 0, 0, 0.9);
+                 z-index: 1000;
+               cursor: pointer;
+            `;
+            fullScreenImg.onclick = function() {
+                document.body.removeChild(fullScreenImg);
+            };
+            document.body.appendChild(fullScreenImg);
+       }
+         function downloadImage(imageUrl) {
+            fetch(imageUrl)
+               .then(response => response.blob())
+                .then(blob => {
+                    const a = document.createElement('a');
+                    const url = URL.createObjectURL(blob);
+                    a.href = url;
+                    a.download = 'generated_image.jpg';
+                    document.body.appendChild(a);
+                    a.click();
+                     URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+                })
+              .catch(error => console.error('Error downloading the image:', error));
+       }
     </script>
 </body>
-</html>
+    </html>
